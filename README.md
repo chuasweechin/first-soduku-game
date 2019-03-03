@@ -1,1 +1,1 @@
-# My First Soduku Game
+# My First Sudoku Game
