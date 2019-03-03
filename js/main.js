@@ -1,10 +1,10 @@
-// create a 9x9 Sodoku game board
-// why 9x9? Because this is how Sodoku works
+// create a 9x9 Sudoku game board
+// why 9x9? Because this is how Sudoku works
 function createGameBoard() {
 	var gameBoard = [];
 	var gameBoardNumbers = [];
 
-	// set up rows of 1 to 9 into 9 rows to form a Sodoku game board
+	// set up rows of 1 to 9 into 9 rows to form a Sudoku game board
 	for (var a = 0; a < 9; a++) {
 		var row = [];
 
@@ -57,12 +57,11 @@ function createGameBoardGUI(gameBoard) {
 
 // generate numbers for the game board
 function generateGameBoardNumbers(gameBoard) {
-	var randomGameNumbers = generateRandomGameBoardNumbers(gameBoard);
+	//var lastFilledPosition = "";
+	var gameNumberBank = generateRandomGameBoardNumbers(gameBoard);
 	var uniqueNumberGroupIndex = createUniqueNumberGroupIndex(gameBoard);
 
-	console.log(randomGameNumbers);
-
-	for (var r = 0; r < randomGameNumbers.length; r++) {
+	for (var r = 0; r < gameNumberBank.length; r++) {
 		var filled = false;
 
 		gameboard_outer_loop: for (var a = 0; a < gameBoard.length; a++) {
@@ -92,9 +91,11 @@ function generateGameBoardNumbers(gameBoard) {
 						}
 					}
 
-					if (neighbourNumbers.includes(randomGameNumbers[r]) === false) {
+					if (neighbourNumbers.includes(gameNumberBank[r]) === false) {
 						filled = true;
-						gameBoard[a][b] = randomGameNumbers[r];
+						//lastFilledPosition = boardPosition;
+						gameBoard[a][b] = gameNumberBank[r];
+
 						break gameboard_outer_loop;
 					}
 					else 
@@ -104,10 +105,15 @@ function generateGameBoardNumbers(gameBoard) {
 				}
 			}
 		}
+
 		if (filled === false) {
-			console.log(randomGameNumbers[r] + "," + filled);
-		}	
+			//var index = lastFilledPosition.split(",");
+			//gameBoard[index[0]][index[1]] = "x";
+			console.log(gameNumberBank[r]);
+		}
+
 	}
+
 	return gameBoard;
 }
 
@@ -132,7 +138,7 @@ function generateRandomGameBoardNumbers(gameBoard) {
 
 // create 27 groups of numbers, each of the group must contain numbers unique to each other
 // there are 3 different types of group. 1st is row, 2nd is column and lastly is 9 different 3 x 3 boxes
-// why 27 groups of these 3 profile? Because this is how Sodoku works
+// why 27 groups of these 3 profile? Because this is how Sudoku works
 function createUniqueNumberGroupIndex(gameBoard) {
 	var group = [];
 	var groups = [];
