@@ -229,7 +229,7 @@ function createGameBoardGUI(gameBoard) {
 
 				inputElement.value = gameBoard[a][b];
 
-				inputElement.setAttribute("type", "text");
+				inputElement.setAttribute("type", "text");				
 				inputElement.setAttribute("maxlength", "1");
 				inputElement.setAttribute("size", "1");
 				inputElement.setAttribute("data-id", a + "," + b);
