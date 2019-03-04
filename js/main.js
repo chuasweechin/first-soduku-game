@@ -1,7 +1,7 @@
 // create a 9x9 Sudoku game board
 // why 9x9? Because this is how Sudoku works
 function createGameBoard() {
-	var gameBoard = [];
+	var answerGameBoard = [];
 
 	// set up rows of 1 to 9 into 9 rows to form a Sudoku game board
 	for (var a = 0; a < 9; a++) {
@@ -10,16 +10,43 @@ function createGameBoard() {
 		for (var b = 0; b < 9; b++) {
 			row.push("x");
 		}
-		gameBoard[a] = row;
+		answerGameBoard[a] = row;
 	}
 
-	// seed game board with 1 to 9
-	seedGameBoard(gameBoard);
+	// seed answer game board by randomly placing number 1 to 9
+	// generate 72 other numbers for answer game board
+	seedGameBoard(answerGameBoard);
+	generateGameBoardNumbers(answerGameBoard);
 
-	// generate numbers for game board
-	generateGameBoardNumbers(gameBoard);
+	return getPlayerGameBoard(answerGameBoard);
+}
 
-	return gameBoard;
+// make a copy of the answer game board and randomly remove numbers to play
+function getPlayerGameBoard(gameBoard) {
+	var playerGameBoard = [] 
+
+	for (var a = 0; a < gameBoard.length; a++) {
+		var row = [];
+
+		for (var b = 0; b < 9; b++) {
+			row.push(gameBoard[a][b]);
+		}
+		playerGameBoard[a] = row;
+	}
+
+	for (var i = 0; i < 30; i++) {
+		var x = Math.floor((Math.random() * 8));
+		var y = Math.floor((Math.random() * 8));
+
+		if (playerGameBoard[x][y] !== "") {
+			playerGameBoard[x][y] = "";
+		} 
+		else {
+			i--;
+		}
+	}
+
+	return playerGameBoard;
 }
 
 // seed game board by randomly assign number 1 to 9 for 9 cells
@@ -27,6 +54,7 @@ function seedGameBoard(gameBoard) {
 	for (var i = 1; i < 10; i++) {
 		var x = Math.floor((Math.random() * 8));
 		var y = Math.floor((Math.random() * 8));
+
 		if (gameBoard[x][y] === "x") {
 			gameBoard[x][y] = i;
 		} 
@@ -195,24 +223,39 @@ function createGameBoardGUI(gameBoard) {
 			var x = Math.floor( a / 3 );
 			var y = Math.floor( b / 3 );
 
-			var tableCell = document.createElement("td");
-			var inputElement = document.createElement("input");
+			if (gameBoard[a][b] === "") {
+				var tableCell = document.createElement("td");
+				var inputElement = document.createElement("input");
 
-			inputElement.value = gameBoard[a][b];
+				inputElement.value = gameBoard[a][b];
 
-			inputElement.setAttribute("type", "text");
-			inputElement.setAttribute("maxlength", "1");
-			inputElement.setAttribute("size", "1");
-			inputElement.setAttribute("data-id", a + "," + b);
+				inputElement.setAttribute("type", "text");
+				inputElement.setAttribute("maxlength", "1");
+				inputElement.setAttribute("size", "1");
+				inputElement.setAttribute("data-id", a + "," + b);
 
-			// logic for styling game board
-			if ((x + y) % 2 === 0 ) {
-				inputElement.style.backgroundColor = "#ccc";
+				// logic for styling game board
+				if ((x + y) % 2 === 0 ) {
+					inputElement.style.backgroundColor = "#ccc";
+				}
+
+				tableCell.appendChild(inputElement);
+				tableRow.appendChild(tableCell);	
 			}
+			else {
+				var tableCell = document.createElement("td");
+				var divElement = document.createElement("div");
 
-			tableCell.appendChild(inputElement);
-		  	tableRow.appendChild(tableCell);	
-	
+				divElement.appendChild(document.createTextNode(gameBoard[a][b]));
+
+				// logic for styling game board
+				if ((x + y) % 2 === 0 ) {
+					divElement.style.backgroundColor = "#ccc";
+				}
+
+				tableCell.appendChild(divElement);
+				tableRow.appendChild(tableCell);	
+			}
 	  	}
 	  	table.appendChild(tableRow);
 	}

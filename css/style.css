@@ -7,9 +7,9 @@ main {
 }
 
 table {
-	margin-left:auto; 
-    margin-right:auto;
-    border: 4px solid #504E4E;
+	margin-left:auto;
+	margin-right: auto;
+	border: 4px solid #504E4E;
 }
 
 input {
@@ -17,6 +17,16 @@ input {
 	height: 40px;
     font-size: 20pt;
     text-align: center;
+	border: 2px #B37C57 solid;
+	background: transparent;
+}
+
+td>div {
+	width: 40px;
+	height: 40px;
+	font-size: 20pt;
+	text-align: center;
 	border: 1px #ccc solid;
 	background: transparent;
+	line-height: 40px;
 }
