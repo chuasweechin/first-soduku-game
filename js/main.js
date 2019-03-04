@@ -2,7 +2,6 @@
 // why 9x9? Because this is how Sudoku works
 function createGameBoard() {
 	var gameBoard = [];
-	var gameBoardNumbers = [];
 
 	// set up rows of 1 to 9 into 9 rows to form a Sudoku game board
 	for (var a = 0; a < 9; a++) {
@@ -13,133 +12,132 @@ function createGameBoard() {
 		}
 		gameBoard[a] = row;
 	}
-	
+
+	// seed game board with 1 to 9
+	seedGameBoard(gameBoard);
+
 	// generate numbers for game board
 	generateGameBoardNumbers(gameBoard);
 
 	return gameBoard;
 }
 
-// create game board GUI
-function createGameBoardGUI(gameBoard) {
-	var table = document.createElement("table");
-	
-	for (var a = 0; a < gameBoard.length; a++) {
-		var tableRow = document.createElement("tr");
-
-		for (var b = 0; b < gameBoard.length; b++) {
-			var sectID_a = Math.floor( a / 3 );
-			var sectID_b = Math.floor( b / 3 );
-
-			var tableCell = document.createElement("td");
-			var inputElement = document.createElement("input");
-
-			inputElement.value = gameBoard[a][b];
-
-			inputElement.setAttribute("type", "text");
-			inputElement.setAttribute("maxlength", "1");
-			inputElement.setAttribute("size", "1");
-			inputElement.setAttribute("data-id", a + "," + b);
-
-			if ((sectID_a + sectID_b) % 2 === 0 ) {
-				inputElement.style.backgroundColor = "#ccc";
-			}
-
-			tableCell.appendChild(inputElement);
-		  	tableRow.appendChild(tableCell);	
-	
-	  	}
-	  	table.appendChild(tableRow);
-	}
-	
-	document.getElementById("game-board").appendChild(table);
-}
-
-// generate numbers for the game board
-function generateGameBoardNumbers(gameBoard) {
-	//var lastFilledPosition = "";
-	var gameNumberBank = generateRandomGameBoardNumbers(gameBoard);
-	var uniqueNumberGroupIndex = createUniqueNumberGroupIndex(gameBoard);
-
-	for (var r = 0; r < gameNumberBank.length; r++) {
-		var filled = false;
-
-		gameboard_outer_loop: for (var a = 0; a < gameBoard.length; a++) {
-			gameboard_inner_loop: for (var b = 0; b < gameBoard[a].length; b++) {
-
-				// fill the position with number only if it is empty
-				if (gameBoard[a][b] === "x") {
-					var neighbourNumbers = [];
-					var boardPosition = a + "," + b;
-					var matchingUniqueGroupIndex = [];
-
-					for (var u = 0; u < uniqueNumberGroupIndex.length; u++) {
-						if (uniqueNumberGroupIndex[u].indexOf(boardPosition) >= 0) {
-							matchingUniqueGroupIndex.push(u);
-						}
-					}
-
-					for (var m = 0; m < matchingUniqueGroupIndex.length; m++) {
-						var v = matchingUniqueGroupIndex[m];
-
-						for (var i = 0; i < 9; i++) {
-							var index = uniqueNumberGroupIndex[v][i].split(",");
-
-							if (uniqueNumberGroupIndex[v][i] !== boardPosition) {
-								neighbourNumbers.push(gameBoard[index[0]][index[1]]);
-							}
-						}
-					}
-
-					if (neighbourNumbers.includes(gameNumberBank[r]) === false) {
-						filled = true;
-						//lastFilledPosition = boardPosition;
-						gameBoard[a][b] = gameNumberBank[r];
-
-						break gameboard_outer_loop;
-					}
-					else 
-					{	
-						gameBoard[a][b] = "x";
-					}
-				}
-			}
+// seed game board by randomly assign number 1 to 9 for 9 cells
+function seedGameBoard(gameBoard) {
+	for (var i = 1; i < 10; i++) {
+		var x = Math.floor((Math.random() * 8));
+		var y = Math.floor((Math.random() * 8));
+		if (gameBoard[x][y] === "x") {
+			gameBoard[x][y] = i;
+		} 
+		else {
+			i--;
 		}
-
-		if (filled === false) {
-			//var index = lastFilledPosition.split(",");
-			//gameBoard[index[0]][index[1]] = "x";
-			console.log(gameNumberBank[r]);
-		}
-
 	}
 
 	return gameBoard;
 }
 
-// generate randomly sort available numbers for the game board
-function generateRandomGameBoardNumbers(gameBoard) {
-	var gameNumbers = [];
+// get 72 unassigned cell position
+function get72UnassignedCellPosition(gameBoard) {
+	var unassigned = [];
 
-	// generate game numbers
 	for (var a = 0; a < gameBoard.length; a++) {
 		for (var b = 0; b < gameBoard[a].length; b++) {
-			gameNumbers.push(a + 1);
+				if (gameBoard[a][b] === "x") {
+					unassigned.push(a + "," + b);
+				}
 		}
 	}
 
-	// randomise game numbers
-	gameNumbers.sort(function() { 
-		return 0.5 - Math.random() 
-	});
+	return unassigned;
+}
 
-	return gameNumbers;
+// check neighbouring numbers based on the given cell position
+function checkNeighbourNumbers(gameBoard, cellPosition) {
+	var numbers = [];
+	var matchingUniqueGroupIndex = [];
+	var uniqueNumberGroupIndex = get27UniqueNumberGroupIndex(gameBoard);
+
+	// look for the matching unique group row, column and 3x3 box from the unique number group
+	for (var u = 0; u < uniqueNumberGroupIndex.length; u++) {
+		if (uniqueNumberGroupIndex[u].indexOf(cellPosition) >= 0) {
+			matchingUniqueGroupIndex.push(u);
+		}
+	}
+
+	// get the neightbouring numbers from row, column and 3x3 box from the unique number group
+	for (var m = 0; m < matchingUniqueGroupIndex.length; m++) {
+		var v = matchingUniqueGroupIndex[m];
+
+		for (var i = 0; i < 9; i++) {
+			var index = uniqueNumberGroupIndex[v][i].split(",");
+
+			if (uniqueNumberGroupIndex[v][i] !== cellPosition) {
+				numbers.push(gameBoard[index[0]][index[1]]);
+			}
+		}
+	}
+
+	return numbers;
+}
+
+// insert a number into the board for a given cell position
+function insertNumber(gameBoard, cellPosition, cellValue) {
+	var x = cellPosition.split(",")[0];
+	var y = cellPosition.split(",")[1];
+
+	// this is to prevent cells with number 9 from locking the backtrack. 
+	// set cell with 9 to x and it will cycle the number again in later loop iteration
+	if (cellValue !== 10) {
+		for (var r = cellValue; r < 10; r++) {
+			var neighbourNumbers = checkNeighbourNumbers(gameBoard, cellPosition);
+
+			// check if the number is unique against the neighbouring numbers
+			if (neighbourNumbers.includes(r) === false) {
+				gameBoard[x][y] = r;
+
+				return true;
+			}
+		}
+	}
+	gameBoard[x][y] = "x";
+
+	return false;
+}
+
+// generate numbers for the game board
+function generateGameBoardNumbers(gameBoard) {
+	var unassignedCellPosition = get72UnassignedCellPosition(gameBoard);
+
+	for (var a = 0; a < unassignedCellPosition.length; a++) {
+		console.log(0);
+		var x = unassignedCellPosition[a].split(",")[0];
+		var y = unassignedCellPosition[a].split(",")[1];
+
+		cellValue = gameBoard[x][y];
+		
+		// start from 1 for empty cells
+		if (cellValue === "x") { 
+			var insert = insertNumber(gameBoard, unassignedCellPosition[a], 1);
+		}
+		// start with +1 for cell with values
+		else if (cellValue > 0 && cellValue < 10) {  
+			var insert = insertNumber(gameBoard, unassignedCellPosition[a], cellValue + 1);
+		}
+
+		if (insert === false) {
+			a = a - 2;
+		}
+	}
+
+	return gameBoard;
 }
 
 // create 27 groups of numbers, each of the group must contain numbers unique to each other
 // there are 3 different types of group. 1st is row, 2nd is column and lastly is 9 different 3 x 3 boxes
 // why 27 groups of these 3 profile? Because this is how Sudoku works
-function createUniqueNumberGroupIndex(gameBoard) {
+function get27UniqueNumberGroupIndex(gameBoard) {
 	var group = [];
 	var groups = [];
 
@@ -184,6 +182,42 @@ function createUniqueNumberGroupIndex(gameBoard) {
 	}
 
 	return groups;
+}
+
+// create game board GUI
+function createGameBoardGUI(gameBoard) {
+	var table = document.createElement("table");
+	
+	for (var a = 0; a < gameBoard.length; a++) {
+		var tableRow = document.createElement("tr");
+
+		for (var b = 0; b < gameBoard.length; b++) {
+			var x = Math.floor( a / 3 );
+			var y = Math.floor( b / 3 );
+
+			var tableCell = document.createElement("td");
+			var inputElement = document.createElement("input");
+
+			inputElement.value = gameBoard[a][b];
+
+			inputElement.setAttribute("type", "text");
+			inputElement.setAttribute("maxlength", "1");
+			inputElement.setAttribute("size", "1");
+			inputElement.setAttribute("data-id", a + "," + b);
+
+			// logic for styling game board
+			if ((x + y) % 2 === 0 ) {
+				inputElement.style.backgroundColor = "#ccc";
+			}
+
+			tableCell.appendChild(inputElement);
+		  	tableRow.appendChild(tableCell);	
+	
+	  	}
+	  	table.appendChild(tableRow);
+	}
+	
+	document.getElementById("game-board").appendChild(table);
 }
 
 createGameBoardGUI(createGameBoard());
