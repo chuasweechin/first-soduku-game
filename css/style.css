@@ -1,5 +1,8 @@
 h1 {
+	font-size: 35pt;
 	text-align: center;
+	font-family: sans-serif;
+	text-underline-position: center;
 }
 
 main {
@@ -17,16 +20,24 @@ input {
 	height: 40px;
     font-size: 20pt;
     text-align: center;
+    font-family: sans-serif;
+    background: transparent;
 	border: 2px #B37C57 solid;
-	background: transparent;
 }
 
 td>div {
 	width: 40px;
 	height: 40px;
 	font-size: 20pt;
+	line-height: 40px;
 	text-align: center;
 	border: 1px #ccc solid;
 	background: transparent;
-	line-height: 40px;
+	font-family: sans-serif;
+}
+
+footer {
+	font-size: 8pt;
+	text-align: center;
+	font-family: sans-serif;
 }
