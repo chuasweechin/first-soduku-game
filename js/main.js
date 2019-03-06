@@ -1,6 +1,6 @@
 // create a 9x9 Sudoku game board
 // why 9x9? Because this is how Sudoku works
-function createGameBoard() {
+function createGameBoard(diffcultyLevel) {
 	var answerGameBoard = [];
 
 	// set up rows of 1 to 9 into 9 rows to form a Sudoku game board
@@ -18,11 +18,11 @@ function createGameBoard() {
 	seedGameBoard(answerGameBoard);
 	generateGameBoardNumbers(answerGameBoard);
 
-	return getPlayerGameBoard(answerGameBoard);
+	return getPlayerGameBoard(answerGameBoard, diffcultyLevel);
 }
 
 // make a copy of the answer game board and randomly remove numbers to play
-function getPlayerGameBoard(gameBoard) {
+function getPlayerGameBoard(gameBoard, diffcultyLevel) {
 	var playerGameBoard = [] 
 
 	for (var a = 0; a < gameBoard.length; a++) {
@@ -34,7 +34,7 @@ function getPlayerGameBoard(gameBoard) {
 		playerGameBoard[a] = row;
 	}
 
-	for (var i = 0; i < 30; i++) {
+	for (var i = 0; i < diffcultyLevel; i++) {
 		var x = Math.floor((Math.random() * 8));
 		var y = Math.floor((Math.random() * 8));
 
@@ -214,6 +214,7 @@ function get27UniqueNumberGroupIndex(gameBoard) {
 
 // create game board GUI
 function createGameBoardGUI(gameBoard) {
+	var myVar;
 	var table = document.createElement("table");
 	
 	for (var a = 0; a < gameBoard.length; a++) {
@@ -259,8 +260,40 @@ function createGameBoardGUI(gameBoard) {
 	  	}
 	  	table.appendChild(tableRow);
 	}
-	
+
+	myVar = setTimeout(showPage, 2000);
 	document.getElementById("game-board").appendChild(table);
 }
 
-createGameBoardGUI(createGameBoard());
+function showPage() {
+	// hide loading bar
+	document.getElementById("loader").style.display = "none";
+	document.getElementById("loader-content").style.display = "none";
+
+	// show game board
+	document.getElementById("game-board").style.display = "block";
+	document.querySelector("footer").style.display = "block";
+}
+
+function generatePuzzle() {
+	var diffcultyLevel;
+
+	// hide game setting menu
+	document.getElementById("game-setting").style.display = "none";
+
+	// show loading bar
+	document.getElementById("loader").style.display = "block";
+	document.getElementById("loader-content").style.display = "block";
+
+	// get diffculty level
+	if (document.getElementById('r1').checked) {
+  		diffcultyLevel = document.getElementById('r1').value;
+	} else if (document.getElementById('r2').checked) {
+  		diffcultyLevel = document.getElementById('r2').value;
+	} else if (document.getElementById('r3').checked) {
+  		diffcultyLevel = document.getElementById('r3').value;
+	}
+	createGameBoardGUI(createGameBoard(diffcultyLevel));
+}
+
+// implement "how am I doing" button

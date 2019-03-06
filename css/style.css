@@ -1,8 +1,8 @@
 h1 {
 	font-size: 35pt;
+	margin: 20px auto;
 	text-align: center;
 	font-family: sans-serif;
-	text-underline-position: center;
 }
 
 main {
@@ -15,7 +15,7 @@ table {
 	border: 4px solid #504E4E;
 }
 
-input {
+td>input {
 	width: 50px;
 	height: 50px;
     font-size: 25pt;
@@ -38,7 +38,60 @@ td>div {
 }
 
 footer {
+	display: none;
 	font-size: 8pt;
 	text-align: center;
 	font-family: sans-serif;
+}
+
+#loader {
+	margin: auto;
+	width: 120px;
+	height: 120px;
+	display: none;
+	border-radius: 50%;
+	border: 16px solid #f3f3f3;
+	border-top: 16px solid #504E4E;
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#loader-content {
+	display: none;
+	text-align: center;
+	font-family: sans-serif;
+}
+
+#game-board {
+	display: none;
+}
+
+#game-setting {
+	font-size: 16px;
+	text-align: center;
+	font-family: sans-serif;
+}
+
+#game-setting>div {
+	margin: 0px 0px 10px 0px;
+}
+
+#game-setting>input[type=radio] {
+	margin: 3px 2px 3px 15px;
+}
+
+#game-setting>input[type=button] {
+	border: none;
+	color: white;
+	font-size: 16px;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 3px 2px 3px 15px;
+	background-color: #504E4E;
 }

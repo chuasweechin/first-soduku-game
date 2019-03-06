@@ -12,6 +12,19 @@
 	</header>
 
 	<main>
+		<div id="game-setting">
+			<div>Difficulty Level:</div> 
+			<input type="radio" name="diffculty-levels" value="10" id="r1"> Easy
+			<input type="radio" name="diffculty-levels" value="30" id="r2" checked="checked"> Medium
+			<input type="radio" name="diffculty-levels" value="50" id="r3"> Hard
+			<br>
+			<br>
+			<input type="button" value="Generate Puzzle" onclick="generatePuzzle()">
+		</div>
+
+		<div id="loader"></div> 
+		<p id="loader-content">Give me a minute to generate your puzzle :)</p>
+
 		<div id="game-board"></div>
 	</main>
 
