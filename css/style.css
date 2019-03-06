@@ -55,8 +55,8 @@ footer {
 
 #loader {
 	margin: auto;
-	width: 120px;
-	height: 120px;
+	width: 70px;
+	height: 70px;
 	display: none;
 	border-radius: 50%;
 	border: 16px solid #f3f3f3;
