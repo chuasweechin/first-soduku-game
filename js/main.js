@@ -23,7 +23,7 @@ function createGameBoard(diffcultyLevel) {
 
 // make a copy of the answer game board and randomly remove numbers to play
 function getPlayerGameBoard(gameBoard, diffcultyLevel) {
-	var playerGameBoard = [] 
+	var playerGameBoard = []
 
 	for (var a = 0; a < gameBoard.length; a++) {
 		var row = [];
@@ -40,7 +40,7 @@ function getPlayerGameBoard(gameBoard, diffcultyLevel) {
 
 		if (playerGameBoard[x][y] !== "") {
 			playerGameBoard[x][y] = "";
-		} 
+		}
 		else {
 			i--;
 		}
@@ -57,7 +57,7 @@ function seedGameBoard(gameBoard) {
 
 		if (gameBoard[x][y] === "x") {
 			gameBoard[x][y] = i;
-		} 
+		}
 		else {
 			i--;
 		}
@@ -115,7 +115,7 @@ function insertNumber(gameBoard, cellPosition, cellValue) {
 	var x = cellPosition.split(",")[0];
 	var y = cellPosition.split(",")[1];
 
-	// this is to prevent cells with number 9 from locking the backtrack. 
+	// this is to prevent cells with number 9 from locking the backtrack.
 	// set cell with 9 to x and it will cycle the number again in later loop iteration
 	if (cellValue !== 10) {
 		for (var r = cellValue; r < 10; r++) {
@@ -144,13 +144,13 @@ function generateGameBoardNumbers(gameBoard) {
 		var y = unassignedCellPosition[a].split(",")[1];
 
 		cellValue = gameBoard[x][y];
-		
+
 		// start from 1 for empty cells
-		if (cellValue === "x") { 
+		if (cellValue === "x") {
 			var insert = insertNumber(gameBoard, unassignedCellPosition[a], 1);
 		}
 		// start with +1 for cell with values
-		else if (cellValue > 0 && cellValue < 10) {  
+		else if (cellValue > 0 && cellValue < 10) {
 			var insert = insertNumber(gameBoard, unassignedCellPosition[a], cellValue + 1);
 		}
 
@@ -216,7 +216,7 @@ function get27UniqueNumberGroupIndex(gameBoard) {
 function createGameBoardGUI(gameBoard) {
 	var myVar;
 	var table = document.createElement("table");
-	
+
 	for (var a = 0; a < gameBoard.length; a++) {
 		var tableRow = document.createElement("tr");
 
@@ -230,9 +230,10 @@ function createGameBoardGUI(gameBoard) {
 
 				inputElement.value = gameBoard[a][b];
 
-				inputElement.setAttribute("type", "text");				
+				inputElement.setAttribute("type", "text");
 				inputElement.setAttribute("maxlength", "1");
 				inputElement.setAttribute("size", "1");
+                inputElement.setAttribute("class", "board-input");
 				inputElement.setAttribute("data-id", a + "," + b);
 
 				// logic for styling game board
@@ -241,7 +242,7 @@ function createGameBoardGUI(gameBoard) {
 				}
 
 				tableCell.appendChild(inputElement);
-				tableRow.appendChild(tableCell);	
+				tableRow.appendChild(tableCell);
 			}
 			else {
 				var tableCell = document.createElement("td");
@@ -255,7 +256,7 @@ function createGameBoardGUI(gameBoard) {
 				}
 
 				tableCell.appendChild(divElement);
-				tableRow.appendChild(tableCell);	
+				tableRow.appendChild(tableCell);
 			}
 	  	}
 	  	table.appendChild(tableRow);
@@ -265,6 +266,14 @@ function createGameBoardGUI(gameBoard) {
 	document.getElementById("game-board").appendChild(table);
 }
 
+function hint() {
+    var input = document.getElementsByClassName("board-input");
+
+    for (var i = 0; i < input.length; i++) {
+        console.log(input[i].value);
+    }
+}
+
 function showPage() {
 	// hide loading bar
 	document.getElementById("loader").style.display = "none";
@@ -272,11 +281,12 @@ function showPage() {
 
 	// show game board
 	document.getElementById("game-board").style.display = "block";
+    document.getElementById("game-hint").style.display = "block";
 	document.querySelector("footer").style.display = "block";
 }
 
 function generatePuzzle() {
-	var diffcultyLevel;
+	var difficultyLevel;
 
 	// hide game setting menu
 	document.getElementById("game-setting").style.display = "none";
@@ -285,15 +295,15 @@ function generatePuzzle() {
 	document.getElementById("loader").style.display = "block";
 	document.getElementById("loader-content").style.display = "block";
 
-	// get diffculty level
+	// get difficulty level
 	if (document.getElementById('r1').checked) {
-  		diffcultyLevel = document.getElementById('r1').value;
+  		difficultyLevel = document.getElementById('r1').value;
 	} else if (document.getElementById('r2').checked) {
-  		diffcultyLevel = document.getElementById('r2').value;
+  		difficultyLevel = document.getElementById('r2').value;
 	} else if (document.getElementById('r3').checked) {
-  		diffcultyLevel = document.getElementById('r3').value;
+  		difficultyLevel = document.getElementById('r3').value;
 	}
-	createGameBoardGUI(createGameBoard(diffcultyLevel));
+	createGameBoardGUI(createGameBoard(difficultyLevel));
 }
 
 // implement "how am I doing" button

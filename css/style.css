@@ -20,17 +20,21 @@ span {
 	font-size: 11pt;
 }
 
+label {
+	padding: 0px 14px 0px 0px;
+}
+
 td>input[type=text] {
 	padding: 0;
 	width: 50px;
 	height: 50px;
-    font-size: 25pt;
-    color: #B37C57;
-    border-radius: 8px;
-    text-align: center;
-    font-family: sans-serif;
-    background: transparent;
-	border: 2px #B37C57 solid;
+  font-size: 25pt;
+  color: #4CAF50;
+  border-radius: 8px;
+  text-align: center;
+  font-family: sans-serif;
+  background: transparent;
+	border: 2px #4CAF50 solid;
 
 }
 
@@ -54,13 +58,13 @@ footer {
 }
 
 #loader {
-	margin: auto;
+	margin: 200px auto 0px auto;
 	width: 70px;
 	height: 70px;
 	display: none;
 	border-radius: 50%;
 	border: 16px solid #f3f3f3;
-	border-top: 16px solid #504E4E;
+	border-top: 16px solid #4CAF50;
 	animation: spin 2s linear infinite;
 }
 
@@ -90,7 +94,7 @@ footer {
 }
 
 #game-setting>input[type=radio] {
-	margin: 3px 2px 3px 15px;
+	margin: 3px 0px 3px 15px;
 }
 
 #game-setting>input[type=button] {
@@ -98,10 +102,29 @@ footer {
 	color: white;
 	font-size: 16px;
 	border-radius: 8px;
-	padding: 15px 32px;
+	padding: 10px 26px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	margin: 3px 2px 3px 15px;
-	background-color: #504E4E;
+	background-color: #4CAF50;
+}
+
+#game-hint {
+	display: none;
+	text-align: center;
+	font-family: sans-serif;
+}
+
+#game-hint>input[type=button] {
+	border: none;
+	color: white;
+	font-size: 16px;
+	border-radius: 8px;
+	padding: 10px 26px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	margin: 3px 2px 3px 15px;
+	background-color: #4CAF50;;
 }
