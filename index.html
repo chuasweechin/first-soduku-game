@@ -14,9 +14,18 @@
 	<main>
 		<div id="game-setting">
 			<div>Difficulty Level:</div> 
-			<input type="radio" name="diffculty-levels" value="10" id="r1"> Easy
-			<input type="radio" name="diffculty-levels" value="30" id="r2" checked="checked"> Medium
-			<input type="radio" name="diffculty-levels" value="50" id="r3"> Hard
+			<label>
+				<input type="radio" name="diffculty-levels" value="10" id="r1">
+				<span>Easy</span>
+			</label>
+			<label>
+				<input type="radio" name="diffculty-levels" value="30" id="r2" checked="checked">
+				<span>Medium</span>
+			</label>
+			<label>
+				<input type="radio" name="diffculty-levels" value="50" id="r3">
+				<span>Hard</span>
+			</label>
 			<br>
 			<br>
 			<input type="button" value="Generate Puzzle" onclick="generatePuzzle()">
