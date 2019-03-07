@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Sudoku</title>
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<header>
+		<h1>Sudoku</h1>
+	</header>
+
+	<main>
+		<div id="game-setting">
+			<div>Difficulty Level:</div>
+			<label>
+				<input type="radio" name="difficulty-levels" value="10" id="r1">
+				<span>Easy</span>
+			</label>
+			<label>
+				<input type="radio" name="difficulty-levels" value="30" id="r2" checked="checked">
+				<span>Medium</span>
+			</label>
+			<label>
+				<input type="radio" name="difficulty-levels" value="50" id="r3">
+				<span>Hard</span>
+			</label>
+			<br>
+			<br>
+			<input type="button" value="Generate Puzzle" id="generatePuzzleBtn" onclick="generatePuzzle()">
+		</div>
+
+        <div id="game-loader">
+    		<div id="loader"></div>
+    		<p id="loader-content">Give me a minute to generate your puzzle :)</p>
+        </div>
+
+		<div id="game-board"></div>
+
+        <br>
+
+        <div id="game-option">
+            <input type="button" value="How am I doing?" onclick="hint()">
+            <input type="button" value="Clear all my input" onclick="clearInput()">
+        </div>
+	</main>
+
+	<br>
+
+	<footer>
+		*Refresh the website on your browser to generate a new Sudoku puzzle*
+	</footer>
+
+	<script src="js/main.js"></script>
+</body>
+
+</html>
