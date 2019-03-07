@@ -35,7 +35,10 @@ td>input[type=text] {
   font-family: sans-serif;
   background: transparent;
 	border: 2px #4CAF50 solid;
+}
 
+td>input[type=text] {
+	outline: none;
 }
 
 td>div {
@@ -57,13 +60,16 @@ footer {
 	font-family: sans-serif;
 }
 
-#loader {
-	margin: 200px auto 0px auto;
-	width: 70px;
-	height: 70px;
+#game-loader {
 	display: none;
+}
+
+#loader {
+	width: 60px;
+	height: 60px;
 	border-radius: 50%;
 	border: 16px solid #f3f3f3;
+	margin: 80px auto 0px auto;
 	border-top: 16px solid #4CAF50;
 	animation: spin 2s linear infinite;
 }
@@ -74,7 +80,7 @@ footer {
 }
 
 #loader-content {
-	display: none;
+	font-size: 14px;
 	text-align: center;
 	font-family: sans-serif;
 }
@@ -95,19 +101,6 @@ footer {
 
 #game-setting>input[type=radio] {
 	margin: 3px 0px 3px 15px;
-}
-
-#game-setting>input[type=button] {
-	border: none;
-	color: white;
-	font-size: 16px;
-	border-radius: 8px;
-	padding: 10px 26px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	margin: 3px 2px 3px 15px;
-	background-color: #4CAF50;
 }
 
 #game-hint {

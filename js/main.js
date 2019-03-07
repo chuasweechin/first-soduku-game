@@ -1,8 +1,9 @@
+var playerGameBoard = [];
+var answerGameBoard = [];
+
 // create a 9x9 Sudoku game board
 // why 9x9? Because this is how Sudoku works
 function createGameBoard(diffcultyLevel) {
-	var answerGameBoard = [];
-
 	// set up rows of 1 to 9 into 9 rows to form a Sudoku game board
 	for (var a = 0; a < 9; a++) {
 		var row = [];
@@ -22,9 +23,7 @@ function createGameBoard(diffcultyLevel) {
 }
 
 // make a copy of the answer game board and randomly remove numbers to play
-function getPlayerGameBoard(gameBoard, diffcultyLevel) {
-	var playerGameBoard = []
-
+function getPlayerGameBoard(gameBoard, difficultyLevel) {
 	for (var a = 0; a < gameBoard.length; a++) {
 		var row = [];
 
@@ -34,7 +33,7 @@ function getPlayerGameBoard(gameBoard, diffcultyLevel) {
 		playerGameBoard[a] = row;
 	}
 
-	for (var i = 0; i < diffcultyLevel; i++) {
+	for (var i = 0; i < difficultyLevel; i++) {
 		var x = Math.floor((Math.random() * 8));
 		var y = Math.floor((Math.random() * 8));
 
@@ -94,7 +93,7 @@ function checkNeighbourNumbers(gameBoard, cellPosition) {
 		}
 	}
 
-	// get the neightbouring numbers from row, column and 3x3 box from the unique number group
+	// get the neighbouring numbers from row, column and 3x3 box from the unique number group
 	for (var m = 0; m < matchingUniqueGroupIndex.length; m++) {
 		var v = matchingUniqueGroupIndex[m];
 
@@ -108,6 +107,34 @@ function checkNeighbourNumbers(gameBoard, cellPosition) {
 	}
 
 	return numbers;
+}
+
+// get number violation index based on the given cell position
+function checkForViolation(gameBoard, cellPosition, cellValue) {
+    var violationIndex = [];
+    var matchingUniqueGroupIndex = [];
+    var uniqueNumberGroupIndex = get27UniqueNumberGroupIndex(gameBoard);
+
+    // look for the matching unique group row, column and 3x3 box from the unique number group
+    for (var u = 0; u < uniqueNumberGroupIndex.length; u++) {
+        if (uniqueNumberGroupIndex[u].indexOf(cellPosition) >= 0) {
+            matchingUniqueGroupIndex.push(u);
+        }
+    }
+
+    for (var m = 0; m < matchingUniqueGroupIndex.length; m++) {
+        var v = matchingUniqueGroupIndex[m];
+
+        for (var i = 0; i < 9; i++) {
+            var index = uniqueNumberGroupIndex[v][i].split(",");
+
+            if (gameBoard[index[0]][index[1]] == cellValue) {
+                violationIndex.push(index[0] + "," + index[1]);
+            }
+        }
+    }
+
+    return violationIndex;
 }
 
 // insert a number into the board for a given cell position
@@ -248,6 +275,9 @@ function createGameBoardGUI(gameBoard) {
 				var tableCell = document.createElement("td");
 				var divElement = document.createElement("div");
 
+                divElement.setAttribute("data-id", a + "," + b);
+                divElement.setAttribute("class", "board-label");
+
 				divElement.appendChild(document.createTextNode(gameBoard[a][b]));
 
 				// logic for styling game board
@@ -267,19 +297,38 @@ function createGameBoardGUI(gameBoard) {
 }
 
 function hint() {
+    var violation = [];
     var input = document.getElementsByClassName("board-input");
 
     for (var i = 0; i < input.length; i++) {
-        console.log(input[i].value);
+        if (input[i].value !== "") {
+            violation = checkForViolation(playerGameBoard, input[i].getAttribute("data-id"),input[i].value);
+        }
+    }
+
+    for (var a = 0; a < violation.length; a++) {
+        var elements = document.getElementsByClassName("board-label");
+
+        for (var b = 0; b < elements.length; b++) {
+            if (elements[b].getAttribute("data-id") == violation[a]) {
+                elements[b].style.color = "red";
+            }
+
+        }
+    }
+
+    if (violation.length === 0) {
+        var elements = document.getElementsByClassName("board-label");
+
+        for (var b = 0; b < elements.length; b++) {
+                elements[b].style.color = "black";
+        }
     }
 }
 
 function showPage() {
-	// hide loading bar
-	document.getElementById("loader").style.display = "none";
-	document.getElementById("loader-content").style.display = "none";
-
-	// show game board
+    document.getElementById("game-setting").style.display = "none";
+    document.getElementById("game-loader").style.display = "none";
 	document.getElementById("game-board").style.display = "block";
     document.getElementById("game-hint").style.display = "block";
 	document.querySelector("footer").style.display = "block";
@@ -288,12 +337,8 @@ function showPage() {
 function generatePuzzle() {
 	var difficultyLevel;
 
-	// hide game setting menu
-	document.getElementById("game-setting").style.display = "none";
-
-	// show loading bar
-	document.getElementById("loader").style.display = "block";
-	document.getElementById("loader-content").style.display = "block";
+    document.getElementById("generatePuzzleBtn").disabled = true;
+    document.getElementById("game-loader").style.display = "block";
 
 	// get difficulty level
 	if (document.getElementById('r1').checked) {
@@ -305,5 +350,3 @@ function generatePuzzle() {
 	}
 	createGameBoardGUI(createGameBoard(difficultyLevel));
 }
-
-// implement "how am I doing" button

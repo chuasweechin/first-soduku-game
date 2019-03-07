@@ -28,18 +28,21 @@
 			</label>
 			<br>
 			<br>
-			<input type="button" value="Generate Puzzle" onclick="generatePuzzle()">
+			<input type="button" value="Generate Puzzle" id="generatePuzzleBtn" onclick="generatePuzzle()">
 		</div>
 
-		<div id="loader"></div>
-		<p id="loader-content">Give me a minute to generate your puzzle :)</p>
-
-		<div id="game-board"></div>
-        <br>
-        <div id="game-hint">
-            <input type="button" value="How am I doing?" onclick="hint()">
+        <div id="game-loader">
+    		<div id="loader"></div>
+    		<p id="loader-content">Give me a minute to generate your puzzle :)</p>
         </div>
 
+		<div id="game-board"></div>
+
+        <br>
+
+        <div id="game-hint">
+            <input type="button" value="How am I doing?" id="hintBtn" onclick="hint()">
+        </div>
 	</main>
 
 	<br>
