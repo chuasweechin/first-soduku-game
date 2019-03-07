@@ -299,38 +299,49 @@ function createGameBoardGUI(gameBoard) {
 function hint() {
     var violation = [];
     var input = document.getElementsByClassName("board-input");
+    var labels = document.getElementsByClassName("board-label");
 
+    // reset the board color first before doing anything
+    for (var i = 0; i < labels.length; i++) {
+            labels[i].style.color = "black";
+    }
+
+    // find violation
     for (var i = 0; i < input.length; i++) {
         if (input[i].value !== "") {
-            violation = checkForViolation(playerGameBoard, input[i].getAttribute("data-id"),input[i].value);
+            violation = violation.concat(checkForViolation(playerGameBoard, input[i].getAttribute("data-id"),input[i].value));
         }
     }
 
+    // set violated numbers  to red
     for (var a = 0; a < violation.length; a++) {
-        var elements = document.getElementsByClassName("board-label");
-
-        for (var b = 0; b < elements.length; b++) {
-            if (elements[b].getAttribute("data-id") == violation[a]) {
-                elements[b].style.color = "red";
+        for (var b = 0; b < labels.length; b++) {
+            if (labels[b].getAttribute("data-id") == violation[a]) {
+                labels[b].style.color = "#E35233";
             }
-
         }
     }
+}
 
-    if (violation.length === 0) {
-        var elements = document.getElementsByClassName("board-label");
+function clearInput() {
+    var input = document.getElementsByClassName("board-input");
+    var labels = document.getElementsByClassName("board-label");
 
-        for (var b = 0; b < elements.length; b++) {
-                elements[b].style.color = "black";
-        }
+    for (var i = 0; i < input.length; i++) {
+        input[i].value = "";
     }
+
+    for (var i = 0; i < labels.length; i++) {
+        labels[i].style.color = "black";
+    }
+
 }
 
 function showPage() {
     document.getElementById("game-setting").style.display = "none";
     document.getElementById("game-loader").style.display = "none";
 	document.getElementById("game-board").style.display = "block";
-    document.getElementById("game-hint").style.display = "block";
+    document.getElementById("game-option").style.display = "block";
 	document.querySelector("footer").style.display = "block";
 }
 

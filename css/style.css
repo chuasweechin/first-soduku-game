@@ -24,23 +24,6 @@ label {
 	padding: 0px 14px 0px 0px;
 }
 
-td>input[type=text] {
-	padding: 0;
-	width: 50px;
-	height: 50px;
-  font-size: 25pt;
-  color: #4CAF50;
-  border-radius: 8px;
-  text-align: center;
-  font-family: sans-serif;
-  background: transparent;
-	border: 2px #4CAF50 solid;
-}
-
-td>input[type=text] {
-	outline: none;
-}
-
 td>div {
 	width: 50px;
 	height: 50px;
@@ -103,21 +86,57 @@ footer {
 	margin: 3px 0px 3px 15px;
 }
 
-#game-hint {
+#game-option {
 	display: none;
 	text-align: center;
 	font-family: sans-serif;
 }
 
-#game-hint>input[type=button] {
+td>input[type=text] {
+	padding: 0;
+	width: 50px;
+	height: 50px;
+  font-size: 25pt;
+  color: #4CAF50;
+  border-radius: 8px;
+  text-align: center;
+  font-family: sans-serif;
+  background: transparent;
+	border: 2px #4CAF50 solid;
+}
+
+td>input[type=text] {
+	outline: none;
+}
+
+input[type=button] {
+	border: none;
+	color: white;
+	outline:none;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: 8px;
+	padding: 10px 26px;
+	text-align: center;
+	display: inline-block;
+	background-color: #4CAF50;
+  transition-duration: 0.4s;
+}
+
+input[type=button]:hover {
+	outline:none;
 	border: none;
 	color: white;
 	font-size: 16px;
 	border-radius: 8px;
 	padding: 10px 26px;
 	text-align: center;
-	text-decoration: none;
 	display: inline-block;
-	margin: 3px 2px 3px 15px;
-	background-color: #4CAF50;;
+	background-color: #3e8e41;
+
+}
+
+input[type=button]:active {
+	outline:none;
+  transform: translateY(4px);
 }
