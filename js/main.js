@@ -34,8 +34,8 @@ function getPlayerGameBoard(gameBoard, difficultyLevel) {
 	}
 
 	for (var i = 0; i < difficultyLevel; i++) {
-		var x = Math.floor((Math.random() * 8));
-		var y = Math.floor((Math.random() * 8));
+		var x = Math.floor((Math.random() * 9));
+		var y = Math.floor((Math.random() * 9));
 
 		if (playerGameBoard[x][y] !== "") {
 			playerGameBoard[x][y] = "";
